@@ -1,0 +1,5 @@
+﻿.netlify/
+*.ps1
+*.cmd
+inject.py
+coach-*.html
