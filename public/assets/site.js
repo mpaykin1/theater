@@ -20,6 +20,9 @@ $('#analytics-no')?.addEventListener('click',()=>{localStorage.setItem('analytic
 $$('[data-wa]').forEach(a=>a.addEventListener('click',()=>{const p={cta_text:a.textContent.trim(),cta_location:ctaLocation(a),cta_message:a.dataset.wa||'',offer_type:offerType()};track('whatsapp_click',p);track('generate_lead',{lead_source:'whatsapp',...p})}));
 $$('a[href]').forEach(a=>{const href=a.getAttribute('href')||'';if(href.startsWith('/')&&!a.hasAttribute('data-wa'))a.addEventListener('click',()=>track('internal_navigation',{destination:href,link_text:a.textContent.trim(),cta_location:ctaLocation(a)}));if(/^https?:/.test(href)&&!href.includes(location.host)&&!a.hasAttribute('data-wa'))a.addEventListener('click',()=>track('outbound_click',{destination:href,link_text:a.textContent.trim(),cta_location:ctaLocation(a)}))});
 const seenScroll=new Set();
+const sticky=$('.sticky-wa');
+function syncSticky(){if(!sticky)return;sticky.classList.toggle('shown',scrollY>Math.min(420,innerHeight*.55))}
+addEventListener('scroll',syncSticky,{passive:true});addEventListener('resize',syncSticky);syncSticky();
 addEventListener('scroll',()=>{const h=document.documentElement;const max=h.scrollHeight-innerHeight;if(max<=0)return;const pct=Math.round(scrollY/max*100);[50,90].forEach(mark=>{if(pct>=mark&&!seenScroll.has(mark)){seenScroll.add(mark);track('scroll_depth',{percent:mark})}})},{passive:true});
 const quiz=$('#scenario-quiz');if(quiz){
 const qs=[
