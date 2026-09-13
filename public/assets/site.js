@@ -11,7 +11,7 @@ function loadAnalytics(){if(window.__gaLoaded)return;window.__gaLoaded=true;cons
 $$('[data-wa]').forEach(a=>a.href=wa(a.dataset.wa));
 const menu=$('.menu'),nav=$('.navlinks');
 if(menu&&nav){menu.addEventListener('click',()=>{nav.classList.toggle('open');menu.setAttribute('aria-expanded',nav.classList.contains('open'))})}
-if(!$('#cookie-consent')){const c=document.createElement('div');c.id='cookie-consent';c.className='cookie';c.innerHTML='<div>????? ???????? ???????????? ?????????, ????? ????????, ????? ???????? ????????????? ???????? ????? ???????? ???.</div><div class="actions"><button class="btn small" id="analytics-yes" type="button">????????? ?????????</button><button class="btn ghost small" id="analytics-no" type="button">?? ??????</button></div>';document.body.appendChild(c)}
+if(!$('#cookie-consent')){const c=document.createElement('div');c.id='cookie-consent';c.className='cookie';c.innerHTML='<div>Можно включить обезличенную аналитику, чтобы понимать, какие страницы действительно помогают людям находить нас.</div><div class="actions"><button class="btn small" id="analytics-yes" type="button">Разрешить аналитику</button><button class="btn ghost small" id="analytics-no" type="button">Не сейчас</button></div>';document.body.appendChild(c)}
 const cookie=$('#cookie-consent');
 const stored=localStorage.getItem('analyticsConsent');
 if(stored==='yes')loadAnalytics();
