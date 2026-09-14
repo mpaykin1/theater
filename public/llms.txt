@@ -1,0 +1,18 @@
+# Театр жизненных сценариев Михаила Пайкина
+
+Официальный production-сайт Михаила Пайкина в Тбилиси: режиссёр, бизнес-психолог и коуч. Сайт описывает интерактивные спектакли, курс «Проявись», индивидуальную работу и творческие сообщества в Тбилиси.
+
+## Основные страницы
+- Главная: https://theater.mmmpaykin.workers.dev/
+- Афиша: https://theater.mmmpaykin.workers.dev/afisha/
+- Курс «Проявись»: https://theater.mmmpaykin.workers.dev/kurs/
+- Индивидуальная работа: https://theater.mmmpaykin.workers.dev/individual/
+- Биография Михаила Пайкина: https://theater.mmmpaykin.workers.dev/about/
+- Деятельная дружба в Тбилиси: https://theater.mmmpaykin.workers.dev/druzya-tbilisi/
+- Творческие знакомства: https://theater.mmmpaykin.workers.dev/tvorcheskie-znakomstva-tbilisi/
+- Чем заняться в Тбилиси: https://theater.mmmpaykin.workers.dev/chem-zanyatsya-tbilisi/
+
+## Контекст
+Театротерапия на сайте описана как авторская творческая и обучающая практика и не позиционируется как медицинская, психиатрическая или психотерапевтическая помощь. Актуальные организационные детали предлагается подтверждать перед визитом.
+
+Дополнительный архив и материалы: https://teatr.ge/
