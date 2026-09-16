@@ -4,7 +4,7 @@ const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 function wa(text){return `https://wa.me/${WA}?text=${encodeURIComponent(text)}`}
 function pageContext(){const q=new URLSearchParams(location.search);return {page_path:location.pathname,page_title:document.title,utm_source:q.get('utm_source')||'',utm_medium:q.get('utm_medium')||'',utm_campaign:q.get('utm_campaign')||''}}
-function offerType(){if(location.pathname.startsWith('/afisha'))return 'performance';if(location.pathname.startsWith('/kurs'))return 'course';if(location.pathname.startsWith('/individual'))return 'individual';if(location.pathname.startsWith('/druzya-tbilisi'))return 'community';if(location.pathname.startsWith('/tvorcheskie-znakomstva-tbilisi'))return 'creative_meetups';if(location.pathname.startsWith('/chem-zanyatsya-tbilisi'))return 'tbilisi_activities';if(location.pathname.startsWith('/about'))return 'about';if(location.pathname==='/')return 'home';return ''}
+function offerType(){if(location.pathname.startsWith('/afisha'))return 'performance';if(location.pathname.startsWith('/kurs'))return 'course';if(location.pathname.startsWith('/individual'))return 'individual';if(location.pathname.startsWith('/druzya-tbilisi'))return 'community';if(location.pathname.startsWith('/tvorcheskie-znakomstva-tbilisi'))return 'creative_meetups';if(location.pathname.startsWith('/chem-zanyatsya-tbilisi'))return 'tbilisi_activities';if(location.pathname.startsWith('/raspisanie-tbilisi'))return 'thematic_schedule';if(location.pathname.startsWith('/about'))return 'about';if(location.pathname==='/')return 'home';return ''}
 function ctaLocation(el){const s=el.closest('section');return s?.id||String(s?.className||'global').split(' ')[0]||'global'}
 function track(name,params={}){if(localStorage.getItem('analyticsConsent')==='yes'&&window.gtag)gtag('event',name,{...pageContext(),...params})}
 function loadAnalytics(){if(window.__gaLoaded)return;window.__gaLoaded=true;const s=document.createElement('script');s.async=true;s.src=`https://www.googletagmanager.com/gtag/js?id=${GA}`;document.head.appendChild(s);window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config',GA,{anonymize_ip:true});gtag('event','measurement_ready',pageContext());gtag('event','offer_view',{...pageContext(),offer_type:offerType()})}
@@ -41,3 +41,4 @@ label.textContent=`Шаг ${step+1} из ${qs.length}`;title.textContent=qs[step
 }
 render();
 }
+if(location.pathname.startsWith('/chem-zanyatsya-tbilisi')||location.pathname.startsWith('/raspisanie-tbilisi')){const s=document.createElement('script');s.src='/assets/thematic.js';s.defer=true;document.head.appendChild(s)}
