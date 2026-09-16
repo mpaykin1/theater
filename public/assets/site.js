@@ -41,4 +41,4 @@ label.textContent=`Шаг ${step+1} из ${qs.length}`;title.textContent=qs[step
 }
 render();
 }
-if(location.pathname.startsWith('/chem-zanyatsya-tbilisi')||location.pathname.startsWith('/raspisanie-tbilisi')){const s=document.createElement('script');s.src='/assets/thematic.js';s.defer=true;document.head.appendChild(s)}
+if(location.pathname.startsWith('/chem-zanyatsya-tbilisi')||location.pathname.startsWith('/raspisanie-tbilisi')){const s=document.createElement('script');s.src='/assets/theme-format-picker.js';s.defer=true;document.head.appendChild(s)}
