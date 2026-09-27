@@ -66,7 +66,7 @@ form.addEventListener('submit',event=>{
  result.replaceChildren(heading,summary,details,...(detailIdea?[detailIdea]:[]),note,link);
  result.hidden=false;
  track('friendship_match_complete',{interest_count:interests.length,selected_role:mode});
- result.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'nearest'});
+ result.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
  heading.setAttribute('tabindex','-1');heading.focus({preventScroll:true});
 });
 })();
