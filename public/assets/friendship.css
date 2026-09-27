@@ -1,0 +1,35 @@
+/* Scoped styles for the friendship matcher. No global site overrides. */
+.friendship-intro{max-width:760px}
+.friendship-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);gap:24px;align-items:start}
+.friendship-form{background:#15100f;border:1px solid var(--line);border-radius:20px;padding:26px;min-width:0}
+.friendship-form fieldset{border:0;margin:0 0 25px;padding:0;min-width:0}
+.friendship-form legend{font-family:Georgia,serif;font-size:clamp(23px,3vw,30px);line-height:1.2;margin-bottom:8px}
+.friendship-form .hint{color:var(--muted);font-size:15px;margin:0 0 17px}
+.friendship-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.friendship-choice{display:block;position:relative;cursor:pointer;min-width:0}
+.friendship-choice input{position:absolute;opacity:0;width:1px;height:1px}
+.friendship-choice span{display:block;min-height:52px;padding:13px 14px;border-radius:12px;border:1px solid #624536;background:#211713;color:var(--text);transition:border-color .15s,background .15s;overflow-wrap:anywhere}
+.friendship-choice input:checked+span{background:#48311d;border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+.friendship-choice input:focus-visible+span{outline:3px solid var(--gold2);outline-offset:3px}
+.friendship-choice span:hover{border-color:var(--gold)}
+.friendship-select,.friendship-text{display:block;width:100%;min-height:48px;padding:12px 14px;background:#211713;color:var(--text);border:1px solid #765341;border-radius:12px;font:inherit}
+.friendship-text{resize:vertical;min-height:90px;max-width:100%}
+.friendship-select:focus-visible,.friendship-text:focus-visible{outline:3px solid var(--gold2);outline-offset:3px}
+.friendship-error{margin:0 0 15px;padding:12px 15px;border:1px solid #ffa879;border-radius:10px;background:#401b13;color:#fff3e5}
+.friendship-error[hidden],.friendship-result[hidden]{display:none}
+.friendship-result{margin-top:25px;padding:22px;background:#26180f;border:1px solid var(--gold);border-radius:16px;overflow-wrap:anywhere}
+.friendship-result h3{font-family:Georgia,serif;font-size:29px;margin:7px 0}
+.friendship-result p{margin:9px 0;color:#eee0d0}
+.friendship-result .btn{margin-top:10px}
+.friendship-guide{display:grid;gap:15px}
+.friendship-guide .card{min-width:0}
+.friendship-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.friendship-steps .card{height:100%}
+.friendship-faq details{border:1px solid var(--line);border-radius:12px;margin:0 0 11px;padding:16px 18px;background:#170f0d}
+.friendship-faq summary{font-weight:800;font-size:18px;cursor:pointer}
+.friendship-faq summary:focus-visible{outline:3px solid var(--gold2);outline-offset:4px}
+.friendship-faq details p{margin:12px 0 2px;color:var(--muted)}
+.friendship-privacy{font-size:14px;color:var(--muted);margin-top:16px}
+@media(max-width:900px){.friendship-layout{grid-template-columns:minmax(0,1fr)}.friendship-steps{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:560px){.friendship-form{padding:18px}.friendship-choices{grid-template-columns:minmax(0,1fr)}.friendship-result .btn{width:100%}.friendship-guide{gap:10px}}
+@media(prefers-reduced-motion:reduce){.friendship-choice span{transition:none}}
