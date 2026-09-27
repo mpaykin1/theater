@@ -1,0 +1,66 @@
+name: Verify friendship production
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/verify-friendship-production.yml
+      - public/druzya-tbilisi/**
+      - public/assets/friendship.*
+      - public/index.html
+      - public/tvorcheskie-znakomstva-tbilisi/**
+      - src/index.js
+      - public/sitemap.xml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: JavaScript syntax
+        run: |
+          node --check public/assets/friendship.js
+          node --input-type=module --check < src/index.js
+      - name: Check exact public Cloudflare site after deployment
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, re, time, urllib.request, xml.etree.ElementTree as ET
+          host = "https://theater.mmmpaykin.workers.dev"
+          page_url = host + "/druzya-tbilisi/"
+          def get(url):
+              with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent":"Theater-Production-Check/1.0"}), timeout=15) as r:
+                  if r.status != 200: raise AssertionError(f"{url}: HTTP {r.status}")
+                  return r.read().decode("utf-8")
+          for attempt in range(36):
+              try:
+                  page = get(page_url)
+                  assert '<h1>' in page and 'Найти друзей в Тбилиси' in page, "missing new H1"
+                  assert 'id="friendship-selector"' in page, "missing interactive form"
+                  assert 'id="friendship-result"' in page, "missing result card"
+                  assert 'href="/assets/friendship.css"' in page, "missing matching styles"
+                  assert 'src="/assets/friendship.js"' in page, "missing matching script"
+                  assert 'rel="canonical" href="' + page_url + '"' in page, "bad canonical"
+                  assert 'name="description"' in page, "missing description"
+                  assert page.count('<details>') == 7, "FAQ count mismatch"
+                  for block in re.findall(r'<script type="application/ld\\+json">([\\s\\S]*?)</script>', page):
+                      json.loads(block)
+                  js = get(host + "/assets/friendship.js")
+                  css = get(host + "/assets/friendship.css")
+                  assert "friendship_match_complete" in js and "friendship-select" in css
+                  home = get(host + "/")
+                  assert '/druzya-tbilisi/#friend-match' in home, "missing home link"
+                  sitemap = get(host + "/sitemap.xml")
+                  assert page_url in sitemap
+                  ET.fromstring(sitemap)
+                  print("PASS: live friendship page, form, JS, CSS, FAQ, canonical, home link, sitemap")
+                  break
+              except Exception as e:
+                  print(f"Waiting for live Cloudflare production ({attempt+1}/36): {e}", flush=True)
+                  if attempt == 35: raise
+                  time.sleep(10)
+          PY
