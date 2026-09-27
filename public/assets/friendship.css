@@ -33,3 +33,5 @@
 @media(max-width:900px){.friendship-layout{grid-template-columns:minmax(0,1fr)}.friendship-steps{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:560px){.friendship-form{padding:18px}.friendship-choices{grid-template-columns:minmax(0,1fr)}.friendship-result .btn{width:100%}.friendship-guide{gap:10px}}
 @media(prefers-reduced-motion:reduce){.friendship-choice span{transition:none}}
+.friendship-proof{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:560px){.friendship-proof{grid-template-columns:minmax(0,1fr)}}
