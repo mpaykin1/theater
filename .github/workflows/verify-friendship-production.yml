@@ -47,7 +47,9 @@ jobs:
                   assert 'rel="canonical" href="' + page_url + '"' in page, "bad canonical"
                   assert 'name="description"' in page, "missing description"
                   assert page.count('<details>') == 7, "FAQ count mismatch"
-                  for block in re.findall(r'<script type="application/ld\\+json">([\\s\\S]*?)</script>', page):
+                  json_blocks = re.findall('<script type="application/ld[+]json">(.*?)</script>', page, re.DOTALL)
+                  assert len(json_blocks) == 2, "missing JSON-LD scripts"
+                  for block in json_blocks:
                       json.loads(block)
                   js = get(host + "/assets/friendship.js")
                   css = get(host + "/assets/friendship.css")
