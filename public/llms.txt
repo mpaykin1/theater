@@ -12,6 +12,17 @@
 - Творческие знакомства: https://theater.mmmpaykin.workers.dev/tvorcheskie-znakomstva-tbilisi/
 - Чем заняться в Тбилиси: https://theater.mmmpaykin.workers.dev/chem-zanyatsya-tbilisi/
 
+- Как понять, чего я хочу: https://theater.mmmpaykin.workers.dev/kak-ponyat-chego-ya-hochu/
+- Афиша и расписание: https://theater.mmmpaykin.workers.dev/raspisanie-tbilisi/
+- Корпоративные воркшопы: https://theater.mmmpaykin.workers.dev/korporativnye-treningi-tbilisi/
+
+## English
+- English home: https://theater.mmmpaykin.workers.dev/en/
+- Shows in Tbilisi: https://theater.mmmpaykin.workers.dev/en/shows-tbilisi/
+- Team workshops in Tbilisi: https://theater.mmmpaykin.workers.dev/en/team-workshops-tbilisi/
+- What to do in Tbilisi: https://theater.mmmpaykin.workers.dev/en/what-to-do-tbilisi/
+- How do I know what I want?: https://theater.mmmpaykin.workers.dev/en/what-do-i-want/
+
 ## Контекст
 Театротерапия на сайте описана как авторская творческая и обучающая практика и не позиционируется как медицинская, психиатрическая или психотерапевтическая помощь. Актуальные организационные детали предлагается подтверждать перед визитом.
 
