@@ -101,6 +101,14 @@ export default {
         }
       });
     }
+    const enPath = HREFLANG[path];
+    if (enPath) {
+      rewriter.on('nav.navlinks', {
+        element(el) {
+          el.append(`<a href="${enPath}" lang="en" hreflang="en">EN</a>`, { html: true });
+        }
+      });
+    }
 
     return rewriter.transform(response);
   },
