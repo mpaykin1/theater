@@ -1,3 +1,17 @@
+const HREFLANG = {
+  '/': '/en/',
+  '/afisha/': '/en/shows-tbilisi/',
+  '/kurs/': '/en/course/',
+  '/individual/': '/en/individual/',
+  '/about/': '/en/about/',
+  '/druzya-tbilisi/': '/en/friends-tbilisi/',
+  '/tvorcheskie-znakomstva-tbilisi/': '/en/creative-meetups-tbilisi/',
+  '/chem-zanyatsya-tbilisi/': '/en/what-to-do-tbilisi/',
+  '/kak-ponyat-chego-ya-hochu/': '/en/what-do-i-want/',
+  '/raspisanie-tbilisi/': '/en/schedule-tbilisi/',
+  '/privacy/': '/en/privacy/'
+};
+
 const SEO = {
   '/': {
     prependTodayHtml: `<div class="wrap"><div class="facts" style="margin-bottom:28px"><div class="fact"><strong>19:00</strong><span>спектакли ежедневно</span></div><div class="fact"><strong>30 ₾</strong><span>стоимость в текущей программе</span></div><div class="fact"><strong>Абано 13/15</strong><span>Тбилиси · подтвердите перед визитом</span></div></div><div class="actions" style="margin-bottom:26px"><a class="btn ghost" href="/raspisanie-tbilisi/">Афиша и расписание →</a><a class="btn ghost" href="/chem-zanyatsya-tbilisi/">Куда пойти и чем заняться в Тбилиси →</a><a class="btn ghost" href="/kak-ponyat-chego-ya-hochu/">Как понять, чего я хочу? →</a></div></div>`
@@ -56,7 +70,12 @@ export default {
     const rewriter = new HTMLRewriter()
       .on('head', {
         element(head) {
-          head.append('<script defer src="/assets/measure-enhance.js"></script>', { html: true });
+          if (!path.startsWith('/en/')) head.append('<script defer src="/assets/measure-enhance.js"></script>', { html: true });
+          const enPath = HREFLANG[path];
+          if (enPath) {
+            const origin = new URL(request.url).origin;
+            head.append(`<link rel="alternate" hreflang="ru" href="${origin}${path}"><link rel="alternate" hreflang="en" href="${origin}${enPath}"><link rel="alternate" hreflang="x-default" href="${origin}${path}">`, { html: true });
+          }
           if (page.jsonLd) {
             head.append(`<script type="application/ld+json">${JSON.stringify(page.jsonLd).replace(/</g, '\\u003c')}</script>`, { html: true });
           }
