@@ -1,0 +1,89 @@
+name: Verify SEO production
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/verify-seo-production.yml
+      - public/**
+      - src/index.js
+      - wrangler.jsonc
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate source JavaScript
+        run: node --input-type=module --check < src/index.js
+      - name: Wait for Cloudflare production and verify SEO landing pages
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, re, time, urllib.request, xml.etree.ElementTree as ET
+          HOST = "https://theater.mmmpaykin.workers.dev"
+          expected = {
+            "/": {
+              "title": "Театр в Тбилиси — спектакли и занятия Михаила Пайкина",
+              "need": ["/raspisanie-tbilisi/", "/chem-zanyatsya-tbilisi/", "/kak-ponyat-chego-ya-hochu/"],
+            },
+            "/chem-zanyatsya-tbilisi/": {
+              "title": "Куда пойти и чем заняться в Тбилиси сегодня — тест",
+              "need": ['id="seo-intent-guide"', "Чем заняться в Тбилиси, если хочется не очередного кафе", 'id="faq"'],
+            },
+            "/kak-ponyat-chego-ya-hochu/": {
+              "title": "Как понять, чего я хочу — 7 вопросов и практический тест",
+              "need": ['id="desire-practice"', "Три способа понять, чего хочется", 'id="faq"'],
+            },
+            "/afisha/": {
+              "title": "Спектакли в Тбилиси сегодня — афиша Михаила Пайкина",
+              "need": ['id="afisha-quick-facts"', "Ищете спектакль в Тбилиси на сегодня?", "/raspisanie-tbilisi/"],
+            },
+            "/raspisanie-tbilisi/": {
+              "title": "Афиша и расписание спектаклей в Тбилиси — Михаил Пайкин",
+              "need": ['id="schedule-faq-visible"', "Афиша и расписание спектаклей в Тбилиси", "Абано 13/15"],
+            },
+          }
+
+          def get(path):
+            req=urllib.request.Request(HOST+path, headers={"User-Agent":"Theater-SEO-Production-Check/1.0"})
+            with urllib.request.urlopen(req, timeout=20) as r:
+              if r.status != 200:
+                raise AssertionError(f"{path}: HTTP {r.status}")
+              return r.read().decode("utf-8")
+
+          last_error = None
+          for attempt in range(48):
+            try:
+              for path, rule in expected.items():
+                html=get(path)
+                title=re.search(r"<title[^>]*>(.*?)</title>", html, re.I|re.S)
+                assert title and re.sub(r"\s+"," ",title.group(1)).strip()==rule["title"], f"{path}: stale title"
+                assert 'name="robots"' not in html or "noindex" not in html.lower(), f"{path}: noindex found"
+                assert len(re.findall(r"<h1\b",html,re.I))==1, f"{path}: H1 count"
+                for marker in rule["need"]:
+                  assert marker in html, f"{path}: missing {marker}"
+                for raw in re.findall(r'<script type="application/ld[+]json">(.*?)</script>', html, re.I|re.S):
+                  json.loads(raw)
+
+              sitemap=get("/sitemap.xml")
+              ET.fromstring(sitemap)
+              for path in ["/","/afisha/","/chem-zanyatsya-tbilisi/","/kak-ponyat-chego-ya-hochu/","/raspisanie-tbilisi/"]:
+                url=HOST+path
+                assert f"<loc>{url}</loc><lastmod>2026-09-30</lastmod>" in sitemap, f"sitemap stale: {path}"
+
+              robots=get("/robots.txt")
+              assert "Sitemap: "+HOST+"/sitemap.xml" in robots
+              print("PASS: exact Cloudflare production contains new SEO titles, content, internal links, JSON-LD, sitemap and robots")
+              break
+            except Exception as e:
+              last_error=e
+              print(f"Waiting for production ({attempt+1}/48): {e}", flush=True)
+              if attempt==47:
+                raise
+              time.sleep(10)
+          PY
