@@ -1,0 +1,72 @@
+name: Verify bilingual theater production
+on:
+  push:
+    branches: [main]
+    paths:
+      - public/en/**
+      - public/korporativnye-treningi-tbilisi/**
+      - public/index.html
+      - public/sitemap.xml
+      - public/assets/en-site.js
+      - src/index.js
+      - wrangler.jsonc
+      - .github/workflows/verify-bilingual-production.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax checks
+        run: |
+          node --check public/assets/en-site.js
+          node --input-type=module --check < src/index.js
+      - name: Verify exact Cloudflare production
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import re, time, urllib.request, xml.etree.ElementTree as ET
+          host='https://theater.mmmpaykin.workers.dev'
+          expected=[
+            '/en/','/en/shows-tbilisi/','/en/course/','/en/individual/','/en/about/',
+            '/en/friends-tbilisi/','/en/creative-meetups-tbilisi/','/en/what-to-do-tbilisi/',
+            '/en/what-do-i-want/','/en/schedule-tbilisi/','/en/privacy/','/en/team-workshops-tbilisi/',
+            '/korporativnye-treningi-tbilisi/'
+          ]
+          def get(path):
+            req=urllib.request.Request(host+path,headers={'User-Agent':'Theater-Bilingual-Production-Check/1.0'})
+            with urllib.request.urlopen(req,timeout=20) as r:
+              assert r.status==200,(path,r.status)
+              return r.read().decode('utf-8')
+          for attempt in range(42):
+            try:
+              home=get('/en/')
+              assert '<html lang="en">' in home
+              assert 'Theatre in Tbilisi' in home
+              assert '/en/team-workshops-tbilisi/' in home
+              for path in expected:
+                page=get(path)
+                assert '<title>' in page and '<h1' in page,path
+                assert 'rel="canonical"' in page,path
+              ru=get('/')
+              assert 'href="/en/"' in ru
+              assert '/korporativnye-treningi-tbilisi/' in ru
+              sitemap=get('/sitemap.xml')
+              root=ET.fromstring(sitemap)
+              locs=[x.text for x in root.iter('{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
+              assert len(locs)>=24,len(locs)
+              for path in expected: assert host+path in locs,path
+              want=get('/kak-ponyat-chego-ya-hochu/')
+              assert 'hreflang="en"' in want and '/en/what-do-i-want/' in want
+              print('PASS: bilingual production pages, language links, sitemap and hreflang')
+              break
+            except Exception as e:
+              print(f'Waiting for Cloudflare production ({attempt+1}/42): {e}',flush=True)
+              if attempt==41: raise
+              time.sleep(10)
+          PY
