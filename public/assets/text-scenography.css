@@ -73,6 +73,10 @@ h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-weight:400;font-siz
 @keyframes afterEnter{from{opacity:0;transform:translateY(14px);filter:blur(5px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
 @keyframes afterDrift{0%,100%{transform:translateX(0);opacity:.58}50%{transform:translateX(3px);opacity:.72}}
 
+@media(min-width:721px){
+ .story{max-width:min(980px,86vw)}
+ .line-two{white-space:nowrap}
+}
 @media(max-width:720px){
  .scene-top{align-items:flex-start}.mode{max-width:45%;text-align:right;font-size:9px;line-height:1.4}
  .story{left:24px;right:24px;top:42%;max-width:none}
