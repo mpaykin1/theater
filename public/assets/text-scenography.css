@@ -29,7 +29,7 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;overflow:hi
 .status i{width:6px;height:6px;border-radius:50%;background:#a4c9d8;box-shadow:0 0 8px #9ac8da;animation:pulse 2.8s ease-in-out infinite}
 .story{position:absolute;left:clamp(22px,7vw,108px);top:50%;z-index:4;transform:translateY(-50%);max-width:min(800px,76vw);animation:storyFloat 15s ease-in-out 2.5s infinite}
 .kicker{margin:0 0 20px;color:#a5becb;font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;animation:kickerEnter 1.5s .3s ease both,kickerBreathe 10s ease-in-out 2s infinite}
-h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(50px,8vw,126px);line-height:.88;letter-spacing:-.052em;color:#edf4f6;text-shadow:0 3px 32px rgba(0,0,0,.25)}
+h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(50px,8vw,126px);line-height:.88;letter-spacing:-.052em;color:#edf4f6;text-shadow:0 3px 32px rgba(0,0,0,.25);animation:titleAura 9s ease-in-out 2s infinite}
 .title-line{display:block;will-change:transform,opacity,filter}
 .line-one{animation:titleEnterOne 1.8s .55s cubic-bezier(.18,.82,.22,1) both,titleHoverOne 13s ease-in-out 2.5s infinite}
 .line-two{animation:titleEnterTwo 1.9s .82s cubic-bezier(.18,.82,.22,1) both,titleHoverTwo 15s ease-in-out 2.8s infinite}
@@ -64,6 +64,7 @@ h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-weight:400;font-siz
 @keyframes storyFloat{0%,100%{translate:0 0}50%{translate:0 -4px}}
 @keyframes kickerEnter{from{opacity:0;transform:translateX(-16px);filter:blur(5px)}to{opacity:1;transform:translateX(0);filter:blur(0)}}
 @keyframes kickerBreathe{0%,100%{opacity:.63;letter-spacing:.24em}50%{opacity:.92;letter-spacing:.255em}}
+@keyframes titleAura{0%,100%{text-shadow:0 3px 32px rgba(0,0,0,.25),0 0 0 rgba(164,204,221,0)}50%{text-shadow:0 4px 38px rgba(0,0,0,.3),0 0 24px rgba(164,204,221,.09)}}
 @keyframes titleEnterOne{from{opacity:0;transform:translate3d(-26px,12px,0);filter:blur(10px)}to{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}}
 @keyframes titleEnterTwo{from{opacity:0;transform:translate3d(22px,15px,0);filter:blur(10px)}to{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}}
 @keyframes titleHoverOne{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(2px,-2px,0)}}
