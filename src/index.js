@@ -9,7 +9,8 @@ const HREFLANG = {
   '/chem-zanyatsya-tbilisi/': '/en/what-to-do-tbilisi/',
   '/kak-ponyat-chego-ya-hochu/': '/en/what-do-i-want/',
   '/raspisanie-tbilisi/': '/en/schedule-tbilisi/',
-  '/privacy/': '/en/privacy/'
+  '/privacy/': '/en/privacy/',
+  '/akterskoe-masterstvo-tbilisi/': '/en/acting-classes-tbilisi/'
 };
 
 const SEO = {
