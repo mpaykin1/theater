@@ -5,6 +5,7 @@ on:
     paths:
       - public/en/**
       - public/korporativnye-treningi-tbilisi/**
+      - public/akterskoe-masterstvo-tbilisi/**
       - public/index.html
       - public/sitemap.xml
       - public/assets/en-site.js
@@ -36,7 +37,7 @@ jobs:
             '/en/','/en/shows-tbilisi/','/en/course/','/en/individual/','/en/about/',
             '/en/friends-tbilisi/','/en/creative-meetups-tbilisi/','/en/what-to-do-tbilisi/',
             '/en/what-do-i-want/','/en/schedule-tbilisi/','/en/privacy/','/en/team-workshops-tbilisi/',
-            '/korporativnye-treningi-tbilisi/'
+            '/korporativnye-treningi-tbilisi/','/akterskoe-masterstvo-tbilisi/','/en/acting-classes-tbilisi/'
           ]
           def get(path):
             req=urllib.request.Request(host+path,headers={'User-Agent':'Theater-Bilingual-Production-Check/1.0'})
@@ -56,6 +57,7 @@ jobs:
               ru=get('/')
               assert 'href="/en/"' in ru
               assert '/korporativnye-treningi-tbilisi/' in ru
+              assert '/akterskoe-masterstvo-tbilisi/' in ru
               sitemap=get('/sitemap.xml')
               root=ET.fromstring(sitemap)
               locs=[x.text for x in root.iter('{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
@@ -63,6 +65,11 @@ jobs:
               for path in expected: assert host+path in locs,path
               want=get('/kak-ponyat-chego-ya-hochu/')
               assert 'hreflang="en"' in want and '/en/what-do-i-want/' in want
+              acting=get('/akterskoe-masterstvo-tbilisi/')
+              assert 'hreflang="en"' in acting and '/en/acting-classes-tbilisi/' in acting
+              acting_en=get('/en/acting-classes-tbilisi/')
+              assert 'hreflang="ru"' in acting_en and '/akterskoe-masterstvo-tbilisi/' in acting_en
+              assert 'FAQPage' in acting and 'FAQPage' in acting_en
               print('PASS: bilingual production pages, language links, sitemap and hreflang')
               break
             except Exception as e:
